@@ -1,9 +1,9 @@
 services:
   cvfa:
-    build:
-      context: .
-      args:
-        NEXT_PUBLIC_PRIMARY_COLOR: ${NEXT_PUBLIC_PRIMARY_COLOR:-#007c6f}
+    image: ${CVFA_IMAGE:-maazamaani/cvfa:latest}
+    pull_policy: always
     ports:
       - "3000:3000"
+    volumes:
+      - ./data/cv.json:/app/data/cv.json
     restart: unless-stopped

@@ -1,5 +1,6 @@
 import rawCv from "../../data/cv.json";
 import { resolvePrimaryColor } from "@/lib/primaryColor";
+import { GITHUB_EDIT_CV_URL } from "@/lib/site";
 
 // --- Types ---
 
@@ -129,13 +130,12 @@ function asArray<T>(value: unknown, map: (item: unknown) => T | null): T[] {
 
 function normalizeSite(raw: unknown): Site {
   const data = isRecord(raw) ? raw : {};
-  const url = asString(data.githubEditUrl).trim();
   const primaryColor = resolvePrimaryColor(asNullableString(data.primaryColor));
 
   return {
     title: asString(data.title, "رزومه"),
     description: asString(data.description),
-    githubEditUrl: url.length > 0 ? url : null,
+    githubEditUrl: GITHUB_EDIT_CV_URL,
     primaryColor,
   };
 }
