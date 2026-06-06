@@ -152,6 +152,7 @@ Two ways to set it (environment variable takes priority):
 - Tailwind CSS v4
 - TypeScript
 - Lucide Icons
+- Inspired by https://cruip.com/demos/devspace/ design
 
 ## License
 
