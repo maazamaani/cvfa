@@ -1,38 +1,38 @@
-# cvfa
+# CVFA - Persian CV Template for Next.js
 
-قالب رزومه فارسی (RTL) با Next.js — برای ساخت رزومه شخصی خودتان کافی است یک فایل JSON را ویرایش کنید.
+A Persian (RTL) resume template built with Next.js — customize your CV by editing a single JSON file.
 
-**نمونه زنده:** [mazamani.ir](https://mazamani.ir)  
-**مخزن:** [github.com/maazamaani/cvfa](https://github.com/maazamaani/cvfa)
+**Live demo:** [mazamani.ir](https://mazamani.ir)  
+**Repository:** [github.com/maazamaani/cvfa](https://github.com/maazamaani/cvfa)
 
-![پیش‌نمایش رزومه](public/screenshot.png)
+![Resume preview](public/screenshot.png)
 
-## ویژگی‌ها
+## Features
 
-- رابط فارسی و راست‌به‌چپ
-- تم روشن / تاریک
-- واکنش‌گرا (موبایل و دسکتاپ)
-- تمام محتوا از یک فایل JSON
-- دانلود PDF با حفظ تم و جلوگیری از شکستن کارت‌ها در صفحات
-- لینک «ویرایش این صفحه» برای ویرایش مستقیم `data/cv.json` در GitHub
-- استقرار با npm یا Docker
+- Persian UI with right-to-left layout
+- Light / dark theme
+- Responsive (mobile and desktop)
+- All content driven by one JSON file
+- PDF download with theme preserved and smart page breaks for cards
+- “Edit this page” link to edit `data/cv.json` on GitHub
+- Deploy with npm or Docker
 
-## شروع سریع
+## Quick start
 
-### پیش‌نیاز
+### Prerequisites
 
 - Node.js 20+
 - npm
 
-یا
+or
 
-- Docker و Docker Compose
+- Docker and Docker Compose
 
 ---
 
-## روش ۱ — npm (توسعه و استقرار مستقیم)
+## Option 1 — npm (local dev and direct deploy)
 
-### نصب و اجرا
+### Install and run
 
 ```bash
 git clone https://github.com/maazamaani/cvfa.git
@@ -41,9 +41,9 @@ npm install
 npm run dev
 ```
 
-مرورگر: [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000)
 
-### استقرار production
+### Production
 
 ```bash
 npm run build
@@ -52,97 +52,100 @@ npm start
 
 ---
 
-## روش ۲ — Docker Compose
+## Option 2 — Docker Compose
 
-با هر push به `main`، GitHub Actions تصویر Docker را می‌سازد و در Docker Hub منتشر می‌کند:
+On every push to `main`, GitHub Actions builds and publishes the image to Docker Hub:
 
 `maazamaani/cvfa:latest`
 
-فایل `docker-compose.yml`:
+`docker-compose.yml`:
 
 ```yaml
 services:
   cvfa:
+    container_name: cvfa
     image: ${CVFA_IMAGE:-maazamaani/cvfa:latest}
     pull_policy: always
     ports:
-      - "3000:3000"
+      - "12345:3000"
     volumes:
       - ./data:/app/data
-    restart: unless-stopped
+    restart: always
 ```
 
-### اجرا
+### Run
 
 ```bash
 mkdir -p data
-# اگر data/cv.json ندارید، از مخزن کپی کنید:
+# If you don't have data/cv.json yet, copy it from the repo:
 # cp /path/to/cvfa/data/cv.json data/cv.json
 
 docker compose pull
 docker compose up -d
 ```
 
-مرورگر: [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:12345](http://localhost:12345)
 
-### نکات Docker
+### Docker notes
 
-- **`data/` پایدار است** — پوشه `./data` روی میزبان به `/app/data` mount می‌شود. قبل از اولین `docker compose up` حتماً فایل `data/cv.json` را روی سرور داشته باشید (نه پوشه خالی با همین نام).
-- اگر خطای mount دیدید و Docker قبلاً `data/cv.json` را به‌اشتباه **پوشه** ساخته: `sudo rm -rf data/cv.json` سپس فایل واقعی را کپی کنید.
-- پس از ویرایش محتوا: `docker compose pull && docker compose up -d`
-- برای استفاده از تگ مشخص: `CVFA_IMAGE=maazamaani/cvfa:COMMIT_SHA docker compose up -d`
-- رنگ اصلی در زمان build در GitHub Actions با `NEXT_PUBLIC_PRIMARY_COLOR` (repository variable) تنظیم می‌شود.
-- برای CI، در GitHub → Settings → Secrets این موارد را اضافه کنید: `DOCKERHUB_USERNAME` و `DOCKERHUB_TOKEN`
+- **`data/` is persisted** — the host `./data` folder is mounted to `/app/data`. Before the first `docker compose up`, make sure `data/cv.json` exists on the server as a **file**, not an empty directory with that name.
+- If you hit a mount error and Docker previously created `data/cv.json` as a **directory**: run `sudo rm -rf data/cv.json`, then copy the real file.
+- After content changes: `docker compose pull && docker compose up -d`
+- To use a specific tag: `CVFA_IMAGE=maazamaani/cvfa:COMMIT_SHA docker compose up -d`
+- Primary color at build time is set via the `NEXT_PUBLIC_PRIMARY_COLOR` repository variable in GitHub Actions.
+- For CI, add these secrets under GitHub → Settings → Secrets: `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`
 
-### اجرای دستی بدون Compose
+### Run without Compose
 
 ```bash
 docker pull maazamaani/cvfa:latest
-docker run -p 3000:3000 -v "$(pwd)/data:/app/data" maazamaani/cvfa:latest
+docker run --name cvfa -p 12345:3000 -v "$(pwd)/data:/app/data" --restart always maazamaani/cvfa:latest
 ```
 
 ---
 
-## ویرایش محتوا
+## Editing content
 
-فایل [`data/cv.json`](data/cv.json) را ویرایش کنید. ساختار اصلی:
+Edit [`data/cv.json`](data/cv.json). Main structure:
 
-| کلید | توضیح |
-|------|--------|
-| `site` | عنوان صفحه، توضیحات SEO، رنگ اصلی (`primaryColor`) |
-| `profile` | نام، عنوان، خلاصه، اطلاعات شخصی |
-| `languages` | زبان‌ها و سطح |
-| `contacts` | راه‌های تماس (مودال) |
-| `experiences` | سوابق شغلی |
-| `education` | تحصیلات |
-| `volunteer` | فعالیت‌های داوطلبانه |
-| `skills` | تخصص‌ها |
-| `certifications` | گواهی‌ها |
-| `toolGroups` | ابزارها |
-| `navItems` | آیتم‌های ناوبری |
 
-فیلدهای اختیاری را می‌توانید حذف کنید یا `null` بگذارید — برنامه با مقادیر پیش‌فرض امن کار می‌کند.
+| Key              | Description                                                 |
+| ---------------- | ----------------------------------------------------------- |
+| `site`           | Page title, SEO description, primary color (`primaryColor`) |
+| `profile`        | Name, title, summary, personal info                         |
+| `languages`      | Languages and proficiency                                   |
+| `contacts`       | Contact methods (modal)                                     |
+| `experiences`    | Work experience                                             |
+| `education`      | Education                                                   |
+| `volunteer`      | Volunteer activities                                        |
+| `skills`         | Skills                                                      |
+| `certifications` | Certifications                                              |
+| `toolGroups`     | Tools                                                       |
+| `navItems`       | Navigation items                                            |
 
-لینک «ویرایش این صفحه» به‌صورت ثابت به مخزن GitHub اشاره می‌کند:
+
+Optional fields can be removed or set to `null` — the app falls back to safe defaults.
+
+The “Edit this page” link is hardcoded to:
 
 `https://github.com/maazamaani/cvfa/edit/main/data/cv.json`
 
-### رنگ اصلی
+### Primary color
 
-پیش‌فرض: `#007c6f`
+Default: `#007c6f`
 
-دو روش تنظیم (اولویت با متغیر محیطی است):
+Two ways to set it (environment variable takes priority):
 
-1. در `data/cv.json`:
-   ```json
+1. In `data/cv.json`:
+  ```json
    "primaryColor": "#007c6f"
-   ```
-2. در `.env.local` (یا build arg در Docker):
-   ```bash
+  ```
+2. In `.env.local` (or Docker build arg):
+  ```bash
    NEXT_PUBLIC_PRIMARY_COLOR=#007c6f
-   ```
+  ```
 
-## فناوری‌ها
+## Tech stack
 
 - Next.js 16
 - React 19
@@ -150,6 +153,6 @@ docker run -p 3000:3000 -v "$(pwd)/data:/app/data" maazamaani/cvfa:latest
 - TypeScript
 - Lucide Icons
 
-## مجوز
+## License
 
-MIT — آزاد برای استفاده، تغییر و انتشار.
+MIT — free to use, modify, and distribute.

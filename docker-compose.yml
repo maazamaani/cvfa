@@ -1,9 +1,10 @@
 services:
   cvfa:
+    container_name: cvfa
     image: ${CVFA_IMAGE:-maazamaani/cvfa:latest}
     pull_policy: always
     ports:
-      - "3000:3000"
+      - "12345:3000"
     volumes:
       - ./data:/app/data
-    restart: unless-stopped
+    restart: always
