@@ -5,5 +5,5 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./data/cv.json:/app/data/cv.json
+      - ./data:/app/data
     restart: unless-stopped

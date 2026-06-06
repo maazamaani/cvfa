@@ -68,13 +68,17 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./data/cv.json:/app/data/cv.json
+      - ./data:/app/data
     restart: unless-stopped
 ```
 
 ### اجرا
 
 ```bash
+mkdir -p data
+# اگر data/cv.json ندارید، از مخزن کپی کنید:
+# cp /path/to/cvfa/data/cv.json data/cv.json
+
 docker compose pull
 docker compose up -d
 ```
@@ -83,7 +87,9 @@ docker compose up -d
 
 ### نکات Docker
 
-- **`data/cv.json` پایدار است** — با volume به `./data/cv.json`، فایل روی میزبان نگه داشته می‌شود و با حذف کانتینر از بین نمی‌رود. پس از ویرایش محتوا: `docker compose pull && docker compose up -d`
+- **`data/` پایدار است** — پوشه `./data` روی میزبان به `/app/data` mount می‌شود. قبل از اولین `docker compose up` حتماً فایل `data/cv.json` را روی سرور داشته باشید (نه پوشه خالی با همین نام).
+- اگر خطای mount دیدید و Docker قبلاً `data/cv.json` را به‌اشتباه **پوشه** ساخته: `sudo rm -rf data/cv.json` سپس فایل واقعی را کپی کنید.
+- پس از ویرایش محتوا: `docker compose pull && docker compose up -d`
 - برای استفاده از تگ مشخص: `CVFA_IMAGE=maazamaani/cvfa:COMMIT_SHA docker compose up -d`
 - رنگ اصلی در زمان build در GitHub Actions با `NEXT_PUBLIC_PRIMARY_COLOR` (repository variable) تنظیم می‌شود.
 - برای CI، در GitHub → Settings → Secrets این موارد را اضافه کنید: `DOCKERHUB_USERNAME` و `DOCKERHUB_TOKEN`
@@ -92,7 +98,7 @@ docker compose up -d
 
 ```bash
 docker pull maazamaani/cvfa:latest
-docker run -p 3000:3000 -v "$(pwd)/data/cv.json:/app/data/cv.json" maazamaani/cvfa:latest
+docker run -p 3000:3000 -v "$(pwd)/data:/app/data" maazamaani/cvfa:latest
 ```
 
 ---
