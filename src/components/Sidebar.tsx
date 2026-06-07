@@ -33,7 +33,7 @@ export function Sidebar() {
       data-pdf-hide
       className="hidden w-24 shrink-0 self-stretch border-e border-slate-200 dark:border-slate-800 lg:block"
     >
-      <div className="sticky top-0 flex h-screen flex-col">
+      <div className="sticky top-0 flex h-screen-zoom flex-col">
         <div className="flex flex-1 items-center justify-center">
           <nav className="flex w-full flex-col gap-1">
             <Link

@@ -39,8 +39,8 @@ export function ResumeTimelineItem({
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="text-xs text-slate-500 dark:text-slate-400">{period}</div>
-          <h3 className="mt-1 text-base font-semibold text-slate-800 dark:text-slate-100">
+          <div className="text-xs text-slate-500 lg:text-sm dark:text-slate-400">{period}</div>
+          <h3 className="mt-1 text-base font-semibold text-slate-800 lg:text-lg dark:text-slate-100">
             {url ? (
               <Link
                 href={url}
@@ -58,7 +58,7 @@ export function ResumeTimelineItem({
               title
             )}
           </h3>
-          <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-0.5 text-sm text-slate-500 lg:text-base dark:text-slate-400">
             {organization}
           </p>
         </div>
@@ -67,7 +67,7 @@ export function ResumeTimelineItem({
       {children ? (
         <div className="mt-3 flex gap-5">
           <div aria-hidden className="w-14 shrink-0" />
-          <div className="min-w-0 flex-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+          <div className="min-w-0 flex-1 text-sm leading-relaxed text-slate-500 lg:text-base dark:text-slate-400">
             {children}
           </div>
         </div>
@@ -87,7 +87,7 @@ export function ResumeSection({
 }) {
   return (
     <section id={id} className="scroll-mt-[140px]">
-      <h2 className="mb-6 text-2xl font-semibold text-slate-800 dark:text-slate-100">
+      <h2 className="mb-6 text-2xl font-semibold text-slate-800 lg:text-3xl dark:text-slate-100">
         {title}
       </h2>
       <ul>{children}</ul>

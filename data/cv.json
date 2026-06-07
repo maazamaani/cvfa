@@ -13,9 +13,11 @@
       "highlight": "مدیر ارشد محصول",
       "summary": "مدیر ارشد محصول با تجربه مدیریت محصولات دیجیتال با فناوری بالا، مشاوره و راهبری کسب و کار در صنایع متعدد و تیم‌سازی و راهبری سازمان مردم‌نهاد"
     },
-    "location": "اصفهان",
-    "birthDate": "۱۳۷۸/۰۵/۲۶",
-    "maritalStatus": "متاهل (یک فرزند)",
+    "details": [
+      { "icon": "map-pin", "value": "اصفهان" },
+      { "icon": "calendar", "value": "۱۳۷۸/۰۵/۲۶" },
+      { "icon": "users", "value": "متاهل (یک فرزند)" }
+    ],
     "footerTitle": "Senior Technical Product Manager"
   },
   "languages": [

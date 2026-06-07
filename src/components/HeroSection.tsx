@@ -7,7 +7,7 @@ export function HeroSection() {
 
   return (
     <header className="pb-12 pt-2 sm:pb-16 sm:pt-4">
-      <h1 className="max-w-2xl text-5xl font-bold leading-[1.1] tracking-tight text-slate-800 lg:text-[2.75rem] lg:leading-[1.2] dark:text-slate-100">
+      <h1 className="max-w-2xl text-5xl font-bold leading-[1.1] tracking-tight text-slate-800 dark:text-slate-100">
         {name}
       </h1>
 
@@ -24,7 +24,7 @@ export function HeroSection() {
         </span>
       </p>
 
-      <p className="mt-6 max-w-xl text-xl leading-relaxed text-slate-500 sm:mt-8 lg:text-lg dark:text-slate-400">
+      <p className="mt-6 max-w-xl text-xl leading-relaxed text-slate-500 sm:mt-8 dark:text-slate-400">
         {hero.summary}
       </p>
 

@@ -119,7 +119,7 @@ export function CVContent() {
         <ToolsSection />
       </GridSection>
 
-      <footer className="flex flex-col justify-between gap-2 border-t border-slate-200 py-8 text-sm text-slate-500 sm:flex-row dark:border-slate-800 dark:text-slate-400">
+      <footer className="flex flex-col justify-between gap-2 border-t border-slate-200 py-8 text-sm text-slate-500 sm:flex-row lg:text-base dark:border-slate-800 dark:text-slate-400">
         <span>{profile.name}</span>
         <span>{profile.footerTitle}</span>
       </footer>

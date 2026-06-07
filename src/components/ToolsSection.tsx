@@ -94,7 +94,7 @@ function ToolCard({
       >
         <Icon className={`h-4 w-4 ${group.iconColor}`} strokeWidth={1.75} />
       </div>
-      <span className="min-w-0 flex-1 text-sm font-semibold text-slate-800 dark:text-slate-100">
+      <span className="min-w-0 flex-1 text-sm font-semibold text-slate-800 lg:text-base dark:text-slate-100">
         {tool.name}
       </span>
       <ArrowUpLeft
@@ -111,14 +111,14 @@ export function ToolsSection() {
   return (
     <>
       <section id="tools" className="scroll-mt-[140px]">
-        <h2 className="mb-8 text-2xl font-semibold text-slate-800 dark:text-slate-100">
+        <h2 className="mb-8 text-2xl font-semibold text-slate-800 lg:text-3xl dark:text-slate-100">
           ابزارها
         </h2>
 
         <div className="space-y-10">
           {toolGroups.map((group) => (
             <div key={group.title}>
-              <h3 className="mb-4 text-lg font-semibold text-slate-800 dark:text-slate-100">
+              <h3 className="mb-4 text-lg font-semibold text-slate-800 lg:text-xl dark:text-slate-100">
                 {group.title}
               </h3>
               <div className="cv-card-grid grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

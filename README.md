@@ -5,7 +5,7 @@ A Persian (RTL) resume template built with Next.js — customize your CV by edit
 **Live demo:** [mazamani.ir](https://mazamani.ir)  
 **Repository:** [github.com/maazamaani/cvfa](https://github.com/maazamaani/cvfa)
 
-![Resume preview](public/screenshot.png)
+![Resume preview](public/screenshot.webp)
 
 ## Features
 

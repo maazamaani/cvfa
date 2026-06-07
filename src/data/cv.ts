@@ -1,14 +1,19 @@
 import rawCv from "../../data/cv.json";
 import { resolvePrimaryColor } from "@/lib/primaryColor";
-import { GITHUB_EDIT_CV_URL } from "@/lib/site";
+import { GITHUB_REPO_URL } from "@/lib/site";
 
 // --- Types ---
 
 export type Site = {
   title: string;
   description: string;
-  githubEditUrl: string | null;
+  githubRepoUrl: string | null;
   primaryColor: string;
+};
+
+export type ProfileDetail = {
+  icon: string;
+  value: string;
 };
 
 export type Profile = {
@@ -20,9 +25,7 @@ export type Profile = {
     highlight: string;
     summary: string;
   };
-  location: string | null;
-  birthDate: string | null;
-  maritalStatus: string | null;
+  details: ProfileDetail[];
   footerTitle: string;
 };
 
@@ -135,14 +138,41 @@ function normalizeSite(raw: unknown): Site {
   return {
     title: asString(data.title, "رزومه"),
     description: asString(data.description),
-    githubEditUrl: GITHUB_EDIT_CV_URL,
+    githubRepoUrl: GITHUB_REPO_URL,
     primaryColor,
   };
+}
+
+function normalizeProfileDetail(raw: unknown): ProfileDetail | null {
+  if (!isRecord(raw)) return null;
+  const value = asString(raw.value).trim();
+  if (!value) return null;
+  return {
+    icon: asString(raw.icon, "circle"),
+    value,
+  };
+}
+
+function normalizeLegacyProfileDetails(data: Record<string, unknown>): ProfileDetail[] {
+  const legacy: ProfileDetail[] = [];
+  const location = asNullableString(data.location);
+  const birthDate = asNullableString(data.birthDate);
+  const maritalStatus = asNullableString(data.maritalStatus);
+
+  if (location) legacy.push({ icon: "map-pin", value: location });
+  if (birthDate) legacy.push({ icon: "calendar", value: birthDate });
+  if (maritalStatus) legacy.push({ icon: "users", value: maritalStatus });
+
+  return legacy;
 }
 
 function normalizeProfile(raw: unknown): Profile {
   const data = isRecord(raw) ? raw : {};
   const hero = isRecord(data.hero) ? data.hero : {};
+  const details = Array.isArray(data.details)
+    ? asArray(data.details, normalizeProfileDetail)
+    : normalizeLegacyProfileDetails(data);
+
   return {
     name: asString(data.name),
     title: asString(data.title),
@@ -152,9 +182,7 @@ function normalizeProfile(raw: unknown): Profile {
       highlight: asString(hero.highlight),
       summary: asString(hero.summary),
     },
-    location: asNullableString(data.location),
-    birthDate: asNullableString(data.birthDate),
-    maritalStatus: asNullableString(data.maritalStatus),
+    details,
     footerTitle: asString(data.footerTitle),
   };
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ContactModal } from "@/components/ContactModal";
 import { profile } from "@/data/cv";
+import { celebratePdfReady } from "@/lib/celebratePdfReady";
 import { downloadCvPdf } from "@/lib/downloadCvPdf";
 
 export function HeroActions() {
@@ -16,6 +17,7 @@ export function HeroActions() {
     try {
       const safeName = profile.name.trim() || "resume";
       await downloadCvPdf(`${safeName}.pdf`);
+      await celebratePdfReady();
     } catch (error) {
       console.error("PDF export failed:", error);
     } finally {
@@ -32,7 +34,7 @@ export function HeroActions() {
         <button
           type="button"
           onClick={() => setContactOpen(true)}
-          className="w-full rounded-full bg-primary px-8 py-3.5 text-center text-base font-medium text-white shadow-sm transition hover:bg-primary-hover lg:w-auto lg:px-6 lg:py-2.5 lg:text-sm dark:bg-primary dark:hover:bg-primary-soft"
+          className="w-full rounded-full bg-primary px-8 py-3.5 text-center text-base font-medium text-white shadow-sm transition hover:bg-primary-hover lg:w-auto lg:px-6 lg:py-2.5 dark:bg-primary dark:hover:bg-primary-soft"
         >
           با من تماس بگیرید
         </button>
@@ -40,7 +42,8 @@ export function HeroActions() {
           type="button"
           onClick={handleDownloadPdf}
           disabled={downloading}
-          className="w-full rounded-full border border-slate-200 bg-white px-8 py-3.5 text-center text-base font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 disabled:cursor-wait disabled:opacity-70 lg:w-auto lg:px-6 lg:py-2.5 lg:text-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800"
+          aria-busy={downloading}
+          className="w-full min-w-36 rounded-full border border-slate-200 bg-white px-8 py-3.5 text-center text-base font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 disabled:cursor-wait disabled:opacity-70 lg:w-auto lg:min-w-40 lg:px-6 lg:py-2.5 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800"
         >
           {downloading ? "در حال آماده‌سازی…" : "دانلود رزومه"}
         </button>

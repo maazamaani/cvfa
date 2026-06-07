@@ -74,16 +74,16 @@ function SkillCard({ skill }: { skill: Skill }) {
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100">
+            <h3 className="text-sm font-semibold text-slate-800 lg:text-base dark:text-slate-100">
               {skill.name}
             </h3>
             <span
-              className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${styles.badge}`}
+              className={`rounded-full px-2 py-0.5 text-[11px] font-medium lg:text-xs ${styles.badge}`}
             >
               {skill.badge}
             </span>
           </div>
-          <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+          <p className="mt-0.5 text-xs text-slate-500 lg:text-sm dark:text-slate-400">
             {skill.nameEn}
           </p>
         </div>
@@ -102,7 +102,7 @@ function SkillCard({ skill }: { skill: Skill }) {
 export function SkillsSection() {
   return (
     <section id="skills" className="scroll-mt-[140px]">
-      <h2 className="mb-6 text-2xl font-semibold text-slate-800 dark:text-slate-100">
+      <h2 className="mb-6 text-2xl font-semibold text-slate-800 lg:text-3xl dark:text-slate-100">
         تخصص‌ها
       </h2>
       <div className="cv-card-grid grid gap-3 sm:grid-cols-2">

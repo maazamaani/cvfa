@@ -1,14 +1,36 @@
-import { Calendar, MapPin, Users } from "lucide-react";
+import type { ElementType } from "react";
+import {
+  Briefcase,
+  Calendar,
+  Circle,
+  GraduationCap,
+  Heart,
+  Home,
+  Mail,
+  MapPin,
+  Phone,
+  Sparkles,
+  Users,
+} from "lucide-react";
 import { GitHubIcon } from "@/components/GitHubIcon";
-import { languages, profile, site, type Language } from "@/data/cv";
+import { languages, profile, site, type Language, type ProfileDetail } from "@/data/cv";
 
-const personalInfo = (
-  [
-    profile.location ? { icon: MapPin, value: profile.location } : null,
-    profile.birthDate ? { icon: Calendar, value: profile.birthDate } : null,
-    profile.maritalStatus ? { icon: Users, value: profile.maritalStatus } : null,
-  ] as const
-).filter((item): item is { icon: typeof MapPin; value: string } => item !== null);
+const profileDetailIcons: Record<string, ElementType> = {
+  "map-pin": MapPin,
+  calendar: Calendar,
+  users: Users,
+  briefcase: Briefcase,
+  "graduation-cap": GraduationCap,
+  heart: Heart,
+  home: Home,
+  mail: Mail,
+  phone: Phone,
+  sparkles: Sparkles,
+};
+
+function getProfileDetailIcon(icon: string): ElementType {
+  return profileDetailIcons[icon] ?? Circle;
+}
 
 function LanguageLevelsList() {
   return (
@@ -25,13 +47,13 @@ function LanguageRow({ lang }: { lang: Language }) {
 
   return (
     <li className="print-avoid-break space-y-1.5">
-      <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+      <div className="flex items-center gap-2 text-sm text-slate-500 lg:text-base dark:text-slate-400">
         <span className="min-w-0 flex-1">{lang.name}</span>
         <span className="shrink-0">{lang.tag}</span>
       </div>
       <div className="h-0.5 overflow-hidden rounded-full bg-slate-200/70 dark:bg-slate-800/80">
         <div
-          className="h-full rounded-full bg-slate-400/70 dark:bg-slate-500/55"
+          className="h-full rounded-full bg-primary-soft dark:bg-primary-soft/90"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -39,16 +61,36 @@ function LanguageRow({ lang }: { lang: Language }) {
   );
 }
 
+function ProfileDetailRow({
+  detail,
+  className,
+}: {
+  detail: ProfileDetail;
+  className?: string;
+}) {
+  const Icon = getProfileDetailIcon(detail.icon);
+
+  return (
+    <span className={`flex items-center gap-2 ${className ?? ""}`}>
+      <Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+      <span>{detail.value}</span>
+    </span>
+  );
+}
+
 function PersonalInfoList() {
+  if (profile.details.length === 0) {
+    return null;
+  }
+
   return (
     <ul className="space-y-2">
-      {personalInfo.map(({ icon: Icon, value }) => (
+      {profile.details.map((detail, index) => (
         <li
-          key={value}
-          className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400"
+          key={`${detail.icon}-${detail.value}-${index}`}
+          className="text-sm text-slate-500 lg:text-base dark:text-slate-400"
         >
-          <Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-          {value}
+          <ProfileDetailRow detail={detail} />
         </li>
       ))}
     </ul>
@@ -56,25 +98,31 @@ function PersonalInfoList() {
 }
 
 export function MobilePersonalInfoRow() {
+  if (profile.details.length === 0) {
+    return null;
+  }
+
   return (
     <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 lg:hidden">
-      {personalInfo.map(({ icon: Icon, value }) => (
-        <div
-          key={value}
-          className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400"
-        >
-          <Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-          <span>{value}</span>
-        </div>
+      {profile.details.map((detail, index) => (
+        <ProfileDetailRow
+          key={`${detail.icon}-${detail.value}-${index}`}
+          detail={detail}
+          className="gap-1.5 text-sm text-slate-500 dark:text-slate-400"
+        />
       ))}
     </div>
   );
 }
 
 const sectionTitleClass =
-  "mb-4 text-sm font-semibold text-slate-800 dark:text-slate-100";
+  "mb-4 text-sm font-semibold text-slate-800 lg:text-base dark:text-slate-100";
 
 function PersonalInfoSection() {
+  if (profile.details.length === 0) {
+    return null;
+  }
+
   return (
     <div className="print-avoid-break">
       <h3 className={sectionTitleClass}>اطلاعات شخصی</h3>
@@ -91,7 +139,7 @@ function LanguagesSection({
   largeTitle?: boolean;
 }) {
   const titleClass = largeTitle
-    ? "mb-4 text-lg font-semibold text-slate-800 dark:text-slate-100"
+    ? "mb-4 text-lg font-semibold text-slate-800 lg:text-xl dark:text-slate-100"
     : sectionTitleClass;
 
   return (
@@ -102,19 +150,19 @@ function LanguagesSection({
   );
 }
 
-function EditPageButton() {
-  if (!site.githubEditUrl) return null;
+function GitHubRepoButton() {
+  if (!site.githubRepoUrl) return null;
 
   return (
     <a
-      href={site.githubEditUrl}
+      href={site.githubRepoUrl}
       target="_blank"
       rel="noopener noreferrer"
       data-pdf-hide
       className="mt-6 flex w-full items-center gap-2 text-sm text-slate-500 transition hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300"
     >
       <GitHubIcon className="h-4 w-4 shrink-0" />
-      <span>ویرایش این صفحه</span>
+      <span>در گیت‌هاب ببینید</span>
     </a>
   );
 }
@@ -127,8 +175,8 @@ export function ProfileWidgets({ variant = "sidebar" }: { variant?: "sidebar" | 
   return (
     <div className="w-full">
       <PersonalInfoSection />
-      <LanguagesSection className="mt-8" />
-      <EditPageButton />
+      <LanguagesSection className={profile.details.length > 0 ? "mt-8" : undefined} />
+      <GitHubRepoButton />
     </div>
   );
 }

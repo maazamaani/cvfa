@@ -17,6 +17,7 @@
   --cv-primary-glow: rgb(0 124 111 / 0.22);
   --cv-primary-glow-strong: rgb(0 124 111 / 0.28);
   --cv-print-width: 928px;
+  --cv-desktop-zoom: 1.25;
 }
 
 * {
@@ -49,6 +50,7 @@ html {
 
 html.pdf-exporting {
   font-size: 100%;
+  zoom: 1;
 }
 
 html.pdf-exporting [data-pdf-hide] {
@@ -85,6 +87,24 @@ html.pdf-exporting #cv-export .hidden.lg\:block,
 html.pdf-exporting #cv-export *,
 #cv-export.pdf-export-root * {
   letter-spacing: normal !important;
+}
+
+html.pdf-exporting .h-screen-zoom,
+#cv-export.pdf-export-root .h-screen-zoom {
+  height: auto !important;
+}
+
+html.pdf-exporting #cv-export aside,
+#cv-export.pdf-export-root aside {
+  align-self: stretch !important;
+  height: auto !important;
+}
+
+html.pdf-exporting #cv-export aside > div,
+#cv-export.pdf-export-root aside > div {
+  position: static !important;
+  height: auto !important;
+  justify-content: flex-start !important;
 }
 
 .print-avoid-break {
@@ -135,6 +155,18 @@ html.pdf-exporting #cv-export *,
 @media (min-width: 1024px) {
   html {
     font-size: 100%;
+    zoom: var(--cv-desktop-zoom);
+  }
+}
+
+/* 100vh overflows the visible viewport when html is zoomed */
+.h-screen-zoom {
+  height: 100vh;
+}
+
+@media (min-width: 1024px) {
+  .h-screen-zoom {
+    height: calc(100vh / var(--cv-desktop-zoom));
   }
 }
 

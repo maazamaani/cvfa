@@ -6,7 +6,7 @@ import { Sidebar } from "@/components/Sidebar";
 
 export default function Home() {
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-4xl lg:max-w-5xl">
+    <div className="mx-auto flex min-h-screen w-full max-w-4xl lg:max-w-6xl">
       <Sidebar />
       <div id="cv-export" className="flex min-w-0 flex-1">
         <main className="min-w-0 flex-1">
