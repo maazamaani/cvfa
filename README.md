@@ -3,7 +3,8 @@
 A Persian (RTL) resume template built with Next.js — customize your CV by editing a single JSON file.
 
 **Live demo:** [mazamani.ir](https://mazamani.ir)  
-**Repository:** [github.com/maazamaani/cvfa](https://github.com/maazamaani/cvfa)
+**Repository:** [github.com/maazamaani/cvfa](https://github.com/maazamaani/cvfa)  
+**Docker Hub:** [hub.docker.com/r/maazamaani/cvfa](https://hub.docker.com/r/maazamaani/cvfa)
 
 ![Resume preview](public/screenshot.webp)
 
@@ -77,19 +78,18 @@ services:
 
 ```bash
 mkdir -p data
-# If you don't have data/cv.json yet, copy it from the repo:
-# cp /path/to/cvfa/data/cv.json data/cv.json
-
 docker compose pull
 docker compose up -d
 ```
+
+On first start, if `./data/cv.json` is missing, the container copies the image default into your host `data/` folder.
 
 Open [http://localhost:12345](http://localhost:12345)
 
 ### Docker notes
 
-- **`data/` is persisted** — the host `./data` folder is mounted to `/app/data`. Before the first `docker compose up`, make sure `data/cv.json` exists on the server as a **file**, not an empty directory with that name.
-- If you hit a mount error and Docker previously created `data/cv.json` as a **directory**: run `sudo rm -rf data/cv.json`, then copy the real file.
+- **`data/` is persisted** — the host `./data` folder is mounted to `/app/data`. On first run, `cv.json` is seeded automatically from the image if it is not already present.
+- If Docker previously created `data/cv.json` as a **directory**: run `sudo rm -rf data/cv.json`, then restart the container so it can seed the file.
 - After content changes: `docker compose pull && docker compose up -d`
 - To use a specific tag: `CVFA_IMAGE=maazamaani/cvfa:COMMIT_SHA docker compose up -d`
 - Primary color at build time is set via the `NEXT_PUBLIC_PRIMARY_COLOR` repository variable in GitHub Actions.
